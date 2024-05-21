@@ -11,12 +11,16 @@ import com.task.entity.Vendor;
 import com.task.repo.SmsRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
 public class EmailService {
+
+    @Value("${sendgrid.api.key}")
+    private String apiKey;
 
     @Autowired
     SmsRepository smsRepository;
@@ -29,13 +33,13 @@ public class EmailService {
 
     private void sendEmailToVendor(Vendor vendor, String message, Logger log) throws IOException {
         log.info("Entering in {} and sendEmailToVendor", EmailService.class.getName());
-        Email from = new Email("example@gmail.com");
+        Email from = new Email("pratidnyathakare@gmail.com");
         String subject = "Payment Notification";
         Email to = new Email(vendor.getEmail());
         Content content = new Content("text/plain", message);
         Mail mail = new Mail(from, subject, to, content);
 
-        SendGrid sg = new SendGrid("API-KEY");
+        SendGrid sg = new SendGrid(apiKey);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
