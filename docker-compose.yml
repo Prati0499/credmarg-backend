@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  postgres-db:
+    image: 'postgres:latest'
+    shm_size: 128mb
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+    ports:
+      - '3308:5432'
